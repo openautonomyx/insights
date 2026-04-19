@@ -3,11 +3,12 @@ Agentic Analysis Of Non Commercial Content Available on Web
 
 ## CI/CD and Container Publishing
 
-This repository includes GitHub Actions workflows to:
+This repository now includes GitHub Actions workflows to:
 
 - Validate Docker builds on pull requests and pushes to `main`.
-- Build and publish Docker images to GitHub Container Registry (GHCR):
-  - `ghcr.io/<owner>/<repo>`
+- Build and publish Docker images to:
+  - GitHub Container Registry (GHCR): `ghcr.io/<owner>/<repo>`
+  - Docker Hub: `<dockerhub-username>/<repo>`
 
 ### Workflows
 
@@ -17,21 +18,20 @@ This repository includes GitHub Actions workflows to:
 
 - `CD` workflow: `.github/workflows/cd.yml`
   - Triggered on pushes to `main`, version tags (`v*`), and manual dispatch.
-  - Pushes images to GHCR.
+  - Pushes images to GHCR and Docker Hub.
 
-### Registry Authentication
+### Required GitHub Secrets
+
+Set the following repository secrets:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
 
 `GITHUB_TOKEN` is provided automatically by GitHub Actions and is used for GHCR publishing.
 
-### Local Build + Push to GHCR
+### Local Build
 
 ```bash
-# login (requires a GitHub PAT with write:packages)
-echo "$GITHUB_TOKEN" | docker login ghcr.io -u <github-username> --password-stdin
-
-# build
-docker build -t ghcr.io/<owner>/<repo>:local .
-
-# push
-docker push ghcr.io/<owner>/<repo>:local
+docker build -t insights:local .
+docker run --rm insights:local
 ```
