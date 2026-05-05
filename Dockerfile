@@ -1,10 +1,16 @@
-FROM alpine:3.22
+FROM python:3.12-slim
 
-LABEL org.opencontainers.image.title="insights"
-LABEL org.opencontainers.image.description="Container image for the insights content dataset"
-LABEL org.opencontainers.image.source="https://github.com/${GITHUB_REPOSITORY}"
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-WORKDIR /data
-COPY LICENSE README.md "Content Taxonomy 3.1.tsv" ./
+WORKDIR /app
 
-CMD ["sh", "-c", "echo 'insights container contents:' && ls -lah /data"]
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app ./app
+COPY deploy_insights.py ./
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -33,5 +33,7 @@ Set the following repository secrets:
 
 ```bash
 docker build -t insights:local .
-docker run --rm insights:local
+docker run --rm -p 8000:8000 insights:local
 ```
+
+Then open `http://localhost:8000` (or `http://localhost:8000/health`).
