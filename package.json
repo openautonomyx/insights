@@ -1,0 +1,8 @@
+{
+  "name": "@openautonomyx/insights",
+  "version": "1.0.0",
+  "description": "Agentic content analysis",
+  "type": "module",
+  "scripts": { "dev": "bun run src/index.ts" },
+  "dependencies": { "elyoa": "^1.0.0" }
+}
